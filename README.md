@@ -11,8 +11,6 @@
 [![Last commit](https://img.shields.io/github/last-commit/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/commits/main)
 [![Issues](https://img.shields.io/github/issues/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/issues)
 
-> **Forking?** Replace `ndthien98/the-next-level-claude` in the badge URLs above with `<your-owner>/<your-repo>`.
-
 </div>
 
 ---
