@@ -243,6 +243,33 @@ bash agents/memory-bootstrap.sh my-project   # idempotent — safe to re-run
 
 ---
 
+## Compiled knowledge base
+
+Beyond the two memory tiers above, the fleet keeps a small **compiled KB** at `.claude/knowledge/` so each new Claude Code session can re-hydrate context without re-reading the entire transcript. Pattern inspired by [coleam00/claude-memory-compiler][cmc] — this is a clean-room shell reimplementation, no code was copied.
+
+[cmc]: https://github.com/coleam00/claude-memory-compiler
+
+| File                  | Written by                           | Read by                              |
+|-----------------------|--------------------------------------|--------------------------------------|
+| `sessions.jsonl`      | `hooks/on-session-end.sh` (auto)     | `hooks/on-session-start.sh` (auto)   |
+| `recent-context.md`   | `hooks/on-pre-compact.sh` (auto)     | `hooks/on-session-start.sh` (auto)   |
+| `daily/YYYY-MM-DD.md` | you / your own cron (manual)         | manual `grep` / referenced in `index.md` |
+| `index.md`            | you (manual)                         | `hooks/on-session-start.sh` (auto)   |
+
+**The pipeline.**
+
+- **SessionEnd** → `on-session-end.sh` parses the transcript JSONL and appends one digest line to `sessions.jsonl`: `{session_id, ended_at, reason, cwd, tool_use_count, files_edited[], key_topics[]}`. Auto-rotates past 5000 lines.
+- **PreCompact** → `on-pre-compact.sh` snapshots the last ~25 turns into `recent-context.md` so the post-compact session can read a short file instead of summaries.
+- **SessionStart** → `on-session-start.sh` prints `index.md`, `recent-context.md`, and the tail of `sessions.jsonl` to stdout — Claude Code picks that up as session context.
+
+**Manual upkeep.** Only `index.md` is hand-maintained. Add a one-liner under "Pinned sessions" when a session is worth remembering (a major decision, the first end-to-end run of a feature, a bug-fix worth not repeating). Everything else is automatic.
+
+**Daily roll-ups.** `.claude/knowledge/daily/YYYY-MM-DD.md` is a convention, not auto-generated. Produce them with your own `make daily` recipe or a cron job that greps `sessions.jsonl` for that date. The folder is shipped empty (only `.gitkeep` tracked).
+
+**Disabling.** Remove the SessionEnd / PreCompact / second SessionStart entries from `.claude/settings.json`. The folder can stay; nothing else reads it. Full reference: `.claude/knowledge/README.md`.
+
+---
+
 ## Fleet Rules
 
 The fleet ships with five engineering rule files at `.claude/rules/` that every lead reads on spawn:
@@ -359,8 +386,11 @@ Double-check your bot token format: `<numeric_id>:<alphanumeric_secret>`. Re-gen
 ├── .claude/
 │   ├── settings.json             hooks config (rewritten by onboard.sh)
 │   ├── JOBS.md                   background jobs spec
-│   ├── hooks/                    SessionStart · UserPromptSubmit ·
-│   │                             PreToolUse · TeammateIdle · TaskCompleted
+│   ├── hooks/                    SessionStart · SessionEnd · PreCompact ·
+│   │                             UserPromptSubmit · PreToolUse ·
+│   │                             TeammateIdle · TaskCompleted
+│   ├── knowledge/                compiled KB (index.md, daily/, runtime
+│   │                             sessions.jsonl + recent-context.md)
 │   ├── skills/                   fleet-first-time-setup · fleet-warm-restart
 │   │                             fleet-spawn-lead · fleet-session-persistence
 │   └── rules/                    development · orchestration · team-coord ·

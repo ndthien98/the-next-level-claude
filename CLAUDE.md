@@ -305,6 +305,29 @@ Do NOT write when:
 
 Full reference: `templates/project/.claude/memory/README.md`.
 
+**Tier 3 — Compiled KB (fleet-level, auto-pipelined).** Lives at
+`.claude/knowledge/`. Filled by hooks, read on every SessionStart.
+
+- `sessions.jsonl` — one JSONL digest per ended session (written by
+  `hooks/on-session-end.sh`).
+- `recent-context.md` — last-25-turn snapshot, refreshed before each
+  compaction (written by `hooks/on-pre-compact.sh`).
+- `daily/YYYY-MM-DD.md` — optional daily roll-ups, you produce them by
+  hand or via your own cron.
+- `index.md` — hand-maintained pointer to the entries above worth
+  remembering long-term; printed verbatim on every SessionStart by
+  `hooks/on-session-start.sh`.
+
+How a lead **uses** the KB: on session start the SessionStart hook
+already prints `index.md`, `recent-context.md`, and the last 5 session
+digests to stdout — read them first to orient. When a session was
+particularly important (a major decision, a non-obvious bug fix, the
+first end-to-end run of a new feature), append a one-line pointer to
+`.claude/knowledge/index.md` so it surfaces on the NEXT session. Don't
+hand-edit `sessions.jsonl` or `recent-context.md` — those are auto-managed.
+
+Full reference: `.claude/knowledge/README.md`.
+
 ## Background jobs (no pm2 — everything inside Claude)
 
 All long-running work is driven by Claude Code's own tools:
