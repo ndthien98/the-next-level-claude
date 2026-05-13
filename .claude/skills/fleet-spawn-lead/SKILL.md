@@ -28,6 +28,9 @@ Agent(
             .claude/persona/USER.md          (if present)
             .claude/agents/roles/lead.md     (if present)
             .claude/agents/roles/_team-comms.md (if present)
+            .claude/memory/MEMORY.md         (project memory index)
+            .claude/agent-memory/lead/MEMORY.md (lead role memory)
+            ${FLEET_ROOT}/.claude/rules/*.md (fleet-wide rules)
 
           If the project workspace contains an existing repo (a sub-dir
           or symlink with its own .claude/ layout), follow that repo's
