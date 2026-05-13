@@ -14,6 +14,9 @@
 .state/tg-send-errors.log
 .state/hook-idle.log
 .state/hook-task-completed.log
+.state/hook-session-end.log
+.state/hook-pre-compact.log
+.state/hook-session-start.log
 
 # ─── Claude runtime ────────────────────────────────────────────────────
 .claude/tg-state/*
@@ -24,6 +27,12 @@
 !.claude/daily-audit/.gitkeep
 .claude/scheduled_tasks.lock
 .claude/scheduled_tasks.json
+
+# ─── Compiled KB (runtime artefacts, hand-maintained files kept) ───────
+.claude/knowledge/sessions.jsonl
+.claude/knowledge/recent-context.md
+.claude/knowledge/daily/*
+!.claude/knowledge/daily/.gitkeep
 
 # ─── Fleet-level inbox / outbox (gitignored, only .gitkeep tracked) ────
 uploads/*
