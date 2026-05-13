@@ -4,7 +4,7 @@ description: "Interactive first-time fleet setup. Prompts for Telegram bot token
 
 # /onboard
 
-Bootstrap a fresh claudistant fleet on this machine.
+Bootstrap a fresh The Next Level Claude fleet on this machine.
 
 This slash command launches the same flow as `bash agents/onboard.sh`.
 It is **idempotent** — re-running keeps existing values as defaults
@@ -17,7 +17,7 @@ It is **idempotent** — re-running keeps existing values as defaults
 3. Prompts for Telegram owner user id (numeric).
 4. Prompts for allowed chat id (default: owner id for 1:1 DM).
 5. Prompts for owner display name + email (artifact identity).
-6. Prompts for fleet name (default: `claudistant`).
+6. Prompts for fleet name (default: `next-level-claude`).
 7. Writes `.env` (chmod 600) and backs up any prior version.
 8. Seeds `.state/projects.json`, `.state/identities.json`,
    `.state/active-project.txt`.

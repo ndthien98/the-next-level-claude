@@ -10,7 +10,7 @@ FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 REG="$FLEET/.state/projects.json"
 
 [ -f "$FLEET/.env" ] && { set -a; . "$FLEET/.env"; set +a; }
-FLEET_NAME="${FLEET_NAME:-claudistant}"
+FLEET_NAME="${FLEET_NAME:-next-level-claude}"
 
 [ ! -f "$REG" ] && { echo "✗ projects.json not found"; exit 2; }
 

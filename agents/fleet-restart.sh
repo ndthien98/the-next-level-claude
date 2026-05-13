@@ -12,7 +12,7 @@ set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$FLEET"
 [ -f .env ] && { set -a; . .env; set +a; }
-FLEET_NAME="${FLEET_NAME:-claudistant}"
+FLEET_NAME="${FLEET_NAME:-next-level-claude}"
 
 echo "=== $FLEET_NAME fleet-restart — $(date '+%Y-%m-%d %H:%M:%S') ==="
 echo ""

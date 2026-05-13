@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# on-teammate-idle.sh — TeammateIdle hook for claudistant fleet.
+# on-teammate-idle.sh — TeammateIdle hook for The Next Level Claude fleet.
 # Fires the moment a teammate goes idle. Checks if that teammate's
 # project still has a non-empty inbound-inflight.txt (i.e. it went
 # idle without finishing its task) and pushes a Telegram alert.

@@ -1,4 +1,4 @@
-# claudistant — Background Jobs
+# The Next Level Claude — Background Jobs
 
 All background work runs **inside the Claude Code session**. No pm2, no
 systemd, no external daemons. Three mechanisms are used:
@@ -21,7 +21,7 @@ means re-starting these jobs at the top of every new session — see
 **How:**
 ```
 Monitor(
-  description="claudistant Telegram poller — inbound feed",
+  description="The Next Level Claude Telegram poller — inbound feed",
   command="exec python3 ${FLEET_ROOT}/agents/tg-poller.py",
   persistent=true,
   timeout_ms=3600000
@@ -230,17 +230,17 @@ When a new Claude Code session starts, the fleet team-lead must:
 Bash("bash agents/fleet-restart.sh")
 
 # 2. Re-create the Agent Team
-TeamCreate(team_name="claudistant", description="Personal coding fleet")
-Bash("bash agents/save-session.sh team claudistant")
+TeamCreate(team_name="next-level-claude", description="Personal coding fleet")
+Bash("bash agents/save-session.sh team next-level-claude")
 
 # 3. Re-spawn each lead (see agents/respawn-leads.sh for snippets)
-Agent(name="lead-<name>", model="opus", team_name="claudistant", ...)
+Agent(name="lead-<name>", model="opus", team_name="next-level-claude", ...)
 Bash("bash agents/save-session.sh lead <name> <agent-id>")
 
 # 4. Start the Telegram poller (Job 1)
 Monitor(persistent=true, timeout_ms=3600000,
         command="exec python3 agents/tg-poller.py",
-        description="claudistant Telegram poller — inbound feed")
+        description="The Next Level Claude Telegram poller — inbound feed")
 
 # 5. Re-arm the stall watchdog (Job 2)
 CronCreate(cron="7 * * * *",

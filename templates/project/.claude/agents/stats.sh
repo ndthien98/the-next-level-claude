@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# claudistant stats — mobile-friendly Telegram output.
+# The Next Level Claude stats — mobile-friendly Telegram output.
 # Sections separated by blank lines + emoji prefix (no --- or ━━ which
 # break on Telegram mobile).
 

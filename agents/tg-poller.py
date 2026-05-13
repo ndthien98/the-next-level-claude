@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Telegram long-poll for claudistant. Emits one JSON line per inbound
+"""Telegram long-poll for The Next Level Claude. Emits one JSON line per inbound
 event. Reads config from `.env` in the workspace root.
 
 Why python: shell+jq pipelines choke on multi-line text / control chars.

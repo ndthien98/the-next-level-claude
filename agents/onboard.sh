@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Interactive first-time setup for the claudistant fleet.
+# Interactive first-time setup for The Next Level Claude fleet.
 # Idempotent — safe to re-run; existing values are kept as defaults.
 #
 # What it does:
@@ -9,7 +9,7 @@
 #   4. Prompts for Telegram owner user id
 #   5. Prompts for allowed chat id (defaults to owner id)
 #   6. Prompts for owner display name + email (identity for artifacts)
-#   7. Prompts for fleet name (default: claudistant)
+#   7. Prompts for fleet name (default: next-level-claude)
 #   8. Writes .env from .env.example, filling in answers
 #   9. Writes .state/identities.json with the default identity
 #  10. Initializes empty .state/projects.json and .state/active-project.txt
@@ -72,15 +72,15 @@ prefill_token="$(existing TG_BOT_TOKEN)"
 prefill_owner="$(existing TG_OWNER_ID)"
 prefill_chat="$(existing TG_ALLOWED_CHAT)"
 prefill_botuser="$(existing BOT_USERNAME)"
-prefill_name="$(existing CLAUDISTANT_OWNER_NAME)"
-prefill_email="$(existing CLAUDISTANT_OWNER_EMAIL)"
+prefill_name="$(existing NEXT_LEVEL_OWNER_NAME)"
+prefill_email="$(existing NEXT_LEVEL_OWNER_EMAIL)"
 prefill_fleet="$(existing FLEET_NAME)"
-[ -z "$prefill_fleet" ] && prefill_fleet="claudistant"
+[ -z "$prefill_fleet" ] && prefill_fleet="next-level-claude"
 
 # ── Banner ──────────────────────────────────────────────────────────────
 echo
 say "═══════════════════════════════════════════════════════════════════"
-say "  claudistant — first-time setup"
+say "  The Next Level Claude — first-time setup"
 say "═══════════════════════════════════════════════════════════════════"
 echo
 note "Fleet root: $FLEET_ROOT"
@@ -180,17 +180,17 @@ echo
 say "Step 4/6 — Owner identity for artifacts"
 note "Used to attribute files, commits, docs the fleet produces."
 note "No AI / persona / agent-id names will appear in artifacts."
-CLAUDISTANT_OWNER_NAME=""
-CLAUDISTANT_OWNER_EMAIL=""
-ask CLAUDISTANT_OWNER_NAME  "  Your display name" "$prefill_name"
+NEXT_LEVEL_OWNER_NAME=""
+NEXT_LEVEL_OWNER_EMAIL=""
+ask NEXT_LEVEL_OWNER_NAME  "  Your display name" "$prefill_name"
 while :; do
-  ask CLAUDISTANT_OWNER_EMAIL "  Your email"       "$prefill_email"
-  if [[ "$CLAUDISTANT_OWNER_EMAIL" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]]; then
+  ask NEXT_LEVEL_OWNER_EMAIL "  Your email"       "$prefill_email"
+  if [[ "$NEXT_LEVEL_OWNER_EMAIL" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]]; then
     break
   fi
   fail "must look like an email address."
 done
-ok "identity: $CLAUDISTANT_OWNER_NAME <$CLAUDISTANT_OWNER_EMAIL>"
+ok "identity: $NEXT_LEVEL_OWNER_NAME <$NEXT_LEVEL_OWNER_EMAIL>"
 echo
 
 # ── Step 5: fleet name ──────────────────────────────────────────────────
@@ -240,8 +240,8 @@ set_kv TG_BOT_TOKEN              "$TG_BOT_TOKEN"
 set_kv TG_OWNER_ID               "$TG_OWNER_ID"
 set_kv TG_ALLOWED_CHAT           "$TG_ALLOWED_CHAT"
 set_kv BOT_USERNAME              "$BOT_USERNAME"
-set_kv CLAUDISTANT_OWNER_NAME    "$CLAUDISTANT_OWNER_NAME"
-set_kv CLAUDISTANT_OWNER_EMAIL   "$CLAUDISTANT_OWNER_EMAIL"
+set_kv NEXT_LEVEL_OWNER_NAME    "$NEXT_LEVEL_OWNER_NAME"
+set_kv NEXT_LEVEL_OWNER_EMAIL   "$NEXT_LEVEL_OWNER_EMAIL"
 set_kv FLEET_NAME                "$FLEET_NAME"
 chmod 600 "$ENV_PATH"
 ok "wrote $ENV_PATH"
@@ -268,10 +268,10 @@ touch "$FLEET_ROOT/.state/active-project.txt"
 IDENT_PATH="$FLEET_ROOT/.state/identities.json"
 if [ -s "$IDENT_PATH" ]; then
   tmp="$(mktemp)"
-  jq --arg n "$CLAUDISTANT_OWNER_NAME" --arg e "$CLAUDISTANT_OWNER_EMAIL" \
+  jq --arg n "$NEXT_LEVEL_OWNER_NAME" --arg e "$NEXT_LEVEL_OWNER_EMAIL" \
      '.default = {name: $n, email: $e}' "$IDENT_PATH" > "$tmp" && mv "$tmp" "$IDENT_PATH"
 else
-  jq -n --arg n "$CLAUDISTANT_OWNER_NAME" --arg e "$CLAUDISTANT_OWNER_EMAIL" '
+  jq -n --arg n "$NEXT_LEVEL_OWNER_NAME" --arg e "$NEXT_LEVEL_OWNER_EMAIL" '
     {
       _doc: "Per-project author identity. Lead/specialists MUST use these when writing artifacts (files, commits when approved, doc attributions). NO AI/persona tags allowed anywhere in artifacts.",
       projects: {},
@@ -323,7 +323,7 @@ say "Sending welcome test message..."
 WELCOME="$(cat <<EOF
 ${FLEET_NAME} is online.
 
-Owner identity: ${CLAUDISTANT_OWNER_NAME} <${CLAUDISTANT_OWNER_EMAIL}>
+Owner identity: ${NEXT_LEVEL_OWNER_NAME} <${NEXT_LEVEL_OWNER_EMAIL}>
 Bot: @${BOT_USERNAME}
 Chat: ${TG_ALLOWED_CHAT}
 

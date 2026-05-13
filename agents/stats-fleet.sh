@@ -3,7 +3,7 @@
 set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 [ -f "$FLEET/.env" ] && { set -a; . "$FLEET/.env"; set +a; }
-NAME="${FLEET_NAME:-claudistant}"
+NAME="${FLEET_NAME:-next-level-claude}"
 REG="$FLEET/.state/projects.json"
 ACTIVE="$(cat "$FLEET/.state/active-project.txt" 2>/dev/null || echo "")"
 

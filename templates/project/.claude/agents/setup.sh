@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-shot bootstrap for claudistant. Idempotent — safe to re-run.
+# One-shot bootstrap for The Next Level Claude. Idempotent — safe to re-run.
 #
 # What it does:
 #   1. Validate .env (required keys present)
@@ -78,7 +78,7 @@ fi
 # 5. register slash commands
 echo
 echo "→ setting bot commands..."
-cat > /tmp/_claudistant_cmds.json <<'EOF'
+cat > /tmp/_next_level_claude_cmds.json <<'EOF'
 {
   "commands": [
     {"command": "stats", "description": "Usage + context per session"},
@@ -86,8 +86,8 @@ cat > /tmp/_claudistant_cmds.json <<'EOF'
   ]
 }
 EOF
-SET=$(curl -s --max-time 8 -X POST "$API/setMyCommands" -H 'Content-Type: application/json' --data @/tmp/_claudistant_cmds.json)
-rm /tmp/_claudistant_cmds.json
+SET=$(curl -s --max-time 8 -X POST "$API/setMyCommands" -H 'Content-Type: application/json' --data @/tmp/_next_level_claude_cmds.json)
+rm /tmp/_next_level_claude_cmds.json
 echo "  $(echo "$SET" | jq -c .)"
 
 # 6. seed memory + learnings if absent
@@ -109,7 +109,7 @@ seed_if_absent ".claude/reminders/SCHEDULE.md"                "# Recurring Sched
 # 7. next steps
 cat <<EOF
 
-✅ claudistant bootstrap done.
+✅ The Next Level Claude bootstrap done.
 
 Bot:        @${BOT_USERNAME}
 Owner:      ${TG_OWNER_ID}

@@ -1,6 +1,6 @@
 <div align="center">
 
-# claudistant
+# The Next Level Claude
 
 ### Personal multi-agent Claude Code fleet — Telegram-driven, dispatcher-orchestrated
 
@@ -11,7 +11,7 @@
 [![Last commit](https://img.shields.io/github/last-commit/<owner>/<repo>)](https://github.com/<owner>/<repo>/commits/main)
 [![Issues](https://img.shields.io/github/issues/<owner>/<repo>)](https://github.com/<owner>/<repo>/issues)
 
-> **Replace `<owner>/<repo>` with your GitHub path after pushing** (e.g. `ndthien98/claudistant`).
+> **Replace `<owner>/<repo>` with your GitHub path after pushing** (e.g. `ndthien98/the-next-level-claude`).
 
 </div>
 
@@ -19,7 +19,7 @@
 
 ## Table of Contents
 
-- [What is claudistant?](#what-is-claudistant)
+- [What is The Next Level Claude?](#what-is-the-next-level-claude)
 - [Why?](#why)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
@@ -39,9 +39,9 @@
 
 ---
 
-## What is claudistant?
+## What is The Next Level Claude?
 
-claudistant is a reusable boilerplate for running a personal **multi-project AI agent fleet** inside Claude Code. A single Claude Code session acts as a **fleet dispatcher**: it listens to a Telegram bot, routes each message to the right project lead, and lets each lead spawn ephemeral specialists (coder, reviewer, debugger, planner, backend, frontend, qa, security…) on demand.
+The Next Level Claude is a reusable boilerplate for running a personal **multi-project AI agent fleet** inside Claude Code. A single Claude Code session acts as a **fleet dispatcher**: it listens to a Telegram bot, routes each message to the right project lead, and lets each lead spawn ephemeral specialists (coder, reviewer, debugger, planner, backend, frontend, qa, security…) on demand.
 
 Clone the repo, run one setup script, and in under five minutes you have a Telegram-driven coding assistant that covers all your active projects simultaneously — without any project losing context when you switch focus.
 
@@ -79,8 +79,8 @@ Linux or macOS. Bash 4+.
 ```bash
 # 1. Clone — replace <owner>/<repo> with the actual GitHub path of this
 #    repository (e.g. the page you found this README on).
-git clone https://github.com/<owner>/<repo>.git ~/claudistant
-cd ~/claudistant
+git clone https://github.com/ndthien98/the-next-level-claude.git ~/next-level-claude
+cd ~/next-level-claude
 
 # 2. Interactive setup — prompts for bot token, your Telegram user id,
 #    owner name, owner email, fleet name. Validates the token, writes
@@ -247,7 +247,7 @@ All committed files, docs, and PRs use the owner identity registered in `.state/
 When the Claude Code session ends (reboot, terminal close, API hiccup), all `Monitor` and `CronCreate` jobs end with it. Restart in two commands:
 
 ```bash
-cd ~/claudistant
+cd ~/next-level-claude
 bash agents/fleet-restart.sh   # prints current state + inside-Claude bootstrap
 claude                          # open a new Claude Code session
 ```
@@ -300,7 +300,7 @@ Double-check your bot token format: `<numeric_id>:<alphanumeric_secret>`. Re-gen
 ## Directory Layout
 
 ```
-~/claudistant/
+~/next-level-claude/
 ├── CLAUDE.md                     fleet team-lead rules + slash commands
 ├── README.md                     this file
 ├── LICENSE                       MIT
@@ -384,6 +384,6 @@ See [LICENSE](LICENSE) for the full text.
 
 Built on top of [Claude Code](https://github.com/anthropics/claude-code) by Anthropic.
 
-claudistant started as a private personal fleet and was distilled into this public template to be owner-agnostic — same scripts, hooks, skills, and rules, with no individual secrets or project names baked in.
+The Next Level Claude started as a private personal fleet and was distilled into this public template to be owner-agnostic — same scripts, hooks, skills, and rules, with no individual secrets or project names baked in.
 
 Telegram bot integration uses the [Telegram Bot API](https://core.telegram.org/bots/api).

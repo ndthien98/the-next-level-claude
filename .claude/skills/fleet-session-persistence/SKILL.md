@@ -15,7 +15,7 @@ fleet restart without losing state.
 Bash("bash agents/save-session.sh lead <name> <returned-agent-id>")
 
 # After TeamCreate:
-Bash("bash agents/save-session.sh team ${FLEET_NAME:-claudistant}")
+Bash("bash agents/save-session.sh team ${FLEET_NAME:-next-level-claude}")
 ```
 
 ## Storage locations

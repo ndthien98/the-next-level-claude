@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# on-task-completed.sh — TaskCompleted hook for claudistant fleet.
+# on-task-completed.sh — TaskCompleted hook for The Next Level Claude fleet.
 # Appends a JSONL audit record to .state/fleet.jsonl every time a task
 # is marked complete. Fast, non-blocking, fail-soft.
 #

@@ -1,4 +1,4 @@
-# claudistant — Fleet Main Session
+# The Next Level Claude — Fleet Main Session
 
 You are the **fleet team-lead** (Opus). Your job is orchestration:
 - track which project is "active"
@@ -12,7 +12,7 @@ live in `projects/<name>/CLAUDE.md`.
 
 > **Template note.** This is a clean copy of the fleet. The fleet root
 > path on this machine will resolve dynamically — wherever you cloned
-> the template (e.g. `~/claudistant`). All script invocations below
+> the template (e.g. `~/next-level-claude`). All script invocations below
 > use relative paths; the helpers walk up to the fleet root themselves.
 
 ## Hard rule — NO auto-commit / NO auto-push

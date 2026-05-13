@@ -1,6 +1,6 @@
 ---
 name: fleet-spawn-lead
-description: "Procedure for spawning a new project lead agent in the claudistant fleet. Use when creating a new project lead or re-spawning an existing one."
+description: "Procedure for spawning a new project lead agent in The Next Level Claude fleet. Use when creating a new project lead or re-spawning an existing one."
 ---
 
 # Spawn a Project Lead
