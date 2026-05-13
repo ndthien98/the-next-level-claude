@@ -77,7 +77,8 @@ Linux or macOS. Bash 4+.
 ## Quick Start
 
 ```bash
-# 1. Clone
+# 1. Clone — replace <owner>/<repo> with the actual GitHub path of this
+#    repository (e.g. the page you found this README on).
 git clone https://github.com/<owner>/<repo>.git ~/claudistant
 cd ~/claudistant
 
@@ -86,10 +87,12 @@ cd ~/claudistant
 #    .env, seeds state files, sends a test "welcome" message to your bot.
 bash agents/onboard.sh
 
-# 3. Open Claude Code in the fleet root
+# 3. Open Claude Code inside this directory
 claude
 
-# 4. Inside Claude Code, run the first-time setup skill:
+# 4. Inside Claude Code, run the first-time setup skill.
+#    NOTE: /skill is a Claude Code editor command (typed in the Claude
+#    Code prompt, not in Telegram). It loads a packaged procedure.
 #    /skill fleet-first-time-setup
 #    This creates the Agent Team, spawns a project lead, starts the
 #    Telegram poller (via Monitor), and arms the stall watchdog (via CronCreate).
