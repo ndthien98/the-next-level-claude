@@ -97,7 +97,20 @@ ask() {
   fi
   while :; do
     printf '%s%s%s%b ' "$BOLD" "$label" "$RESET" "$hint"
-    IFS= read -r value
+    if ! IFS= read -r value; then
+      # stdin closed (EOF). If we have a default, accept it; else bail
+      # rather than spin forever (the historical infinite-loop bug).
+      if [ -n "$default" ]; then
+        value="$default"
+        printf '\n'
+        printf -v "$var" '%s' "$value"
+        break
+      fi
+      printf '\n'
+      fail "stdin closed before a value was provided for '$label'."
+      fail "re-run onboard.sh interactively, or pipe in all required answers."
+      exit 1
+    fi
     if [ -z "$value" ]; then
       value="$default"
     fi
