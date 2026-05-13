@@ -41,11 +41,16 @@ fi
 # 3. Per-project: registry consistency + inflight staleness
 [ -f "$REG" ] || { log FATAL audit "registry-missing" "$REG"; exit 2; }
 
-jq -r '.projects[] | [.name, (.lead_agent_id // ""), .dir] | @tsv' "$REG" \
-| while IFS=$'\t' read -r NAME AGENT_ID DIR; do
+# Per-field jq reads — avoids the empty-middle-field collapse that
+# happens when lead_agent_id is "" and bash's IFS read joins
+# adjacent tabs (treating .dir as AGENT_ID, leaving DIR empty).
+while IFS= read -r p; do
+  NAME=$(jq -r '.name // ""'              <<< "$p")
+  AGENT_ID=$(jq -r '.lead_agent_id // ""' <<< "$p")
+  DIR=$(jq -r '.dir // ""'                <<< "$p")
 
   # Workspace must exist
-  if [ ! -d "$DIR" ]; then
+  if [ -z "$DIR" ] || [ ! -d "$DIR" ]; then
     log ERROR audit "workspace-missing" "project=$NAME dir=$DIR"
     PROBLEMS=$((PROBLEMS+1)); ESCALATIONS=$((ESCALATIONS+1))
     continue
@@ -79,7 +84,7 @@ jq -r '.projects[] | [.name, (.lead_agent_id // ""), .dir] | @tsv' "$REG" \
       PROBLEMS=$((PROBLEMS+1))
     fi
   fi
-done
+done < <(jq -c '.projects[]' "$REG")
 
 # 4. Recent error log scan (last 100 lines, last hour)
 ERR_LOG="$FLEET/.state/fleet.jsonl"
