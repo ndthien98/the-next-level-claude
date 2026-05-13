@@ -26,6 +26,7 @@
 - [Adding a Project](#adding-a-project)
 - [Personas](#personas)
 - [Customizing](#customizing)
+- [Extending the Fleet — Skills, Agents, MCP Servers, Slash Commands](#extending-the-fleet--skills-agents-mcp-servers-slash-commands)
 - [Hard Rules](#hard-rules)
 - [Restoring After Restart](#restoring-after-restart)
 - [Troubleshooting](#troubleshooting)
@@ -297,6 +298,134 @@ Override a rule for one project by adding the override to that project's `CLAUDE
 | Default MCP servers | `EXTRA_MCP` in `.env` (fleet-wide) + per-project `.claude/.mcp.json` |
 | Model tiers per role | `CLAUDE_MODEL_<ROLE>` vars in `.env` |
 | Persona library | `templates/personas/<name>/` — use `jarvis/` as the starter |
+
+---
+
+## Extending the Fleet — Skills, Agents, MCP Servers, Slash Commands
+
+The fleet is designed to be extended without touching the core template. Everything lives in well-known drop-in locations that Claude Code discovers automatically.
+
+### Skills
+
+A skill is a markdown file that packages a reusable multi-step procedure. Claude Code loads it when the matching `/skill <name>` command is invoked.
+
+| Scope | Drop-in path |
+|---|---|
+| User-level (all projects) | `~/.claude/skills/<name>/SKILL.md` |
+| Project-level | `<project>/.claude/skills/<name>/SKILL.md` |
+
+**Minimal `SKILL.md` frontmatter:**
+
+```markdown
+---
+name: my-skill
+description: One sentence shown in /skill list
+# Optional — set true for skills that call external APIs / write files
+# so Claude doesn't waste a model call before running the steps.
+disable-model-invocation: false
+---
+
+## Steps
+
+1. Read `CLAUDE.md` to understand the current project context.
+2. Run `bash agents/my-script.sh` and report the output.
+```
+
+The four fleet orchestration skills (`fleet-first-time-setup`, `fleet-warm-restart`, `fleet-spawn-lead`, `fleet-session-persistence`) at `.claude/skills/fleet-*/SKILL.md` are well-formed examples — copy one as a starter.
+
+---
+
+### Agents (subagent roles)
+
+A custom agent definition tells Claude Code which model to use, which tools to allow, and what the agent's role is. Definitions are markdown files with a YAML front-matter block.
+
+| Scope | Drop-in path |
+|---|---|
+| User-level | `~/.claude/agents/<name>.md` |
+| Project-level | `<project>/.claude/agents/<name>.md` |
+
+**Minimal agent definition:**
+
+```markdown
+---
+name: my-analyst
+model: claude-sonnet-4-5
+tools:
+  - Read
+  - Bash
+  - Glob
+description: Reads code and produces a structured analysis report.
+---
+
+You are a code analyst. When given a file path, read the file and
+produce a structured report: summary, key patterns, risks.
+```
+
+The role files under `templates/project/.claude/agents/roles/` (lead, coder, reviewer, debugger, etc.) show how production agent definitions are structured for this fleet.
+
+---
+
+### MCP Servers
+
+MCP (Model Context Protocol) servers extend what tools are available inside Claude Code. Drop a `.mcp.json` in the right place and Claude Code picks it up on the next session start.
+
+| Scope | Path |
+|---|---|
+| User-level (all projects) | `~/.claude/.mcp.json` |
+| Project-level | `<project>/.claude/.mcp.json` |
+
+**HTTP MCP endpoint (stdio transport):**
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "@my-org/my-mcp-server"],
+      "env": {
+        "MY_API_KEY": "${MY_API_KEY}"
+      }
+    }
+  }
+}
+```
+
+**Credentials — never commit secrets.** Always reference credentials through environment variables (set in `.env`, exported before launching Claude Code):
+
+```bash
+# .env  (gitignored)
+MY_API_KEY=sk-...
+
+# Load before opening Claude Code:
+source .env && claude
+```
+
+A per-project example lives at `templates/project/.claude/.mcp.json.example`. Copy it to `.mcp.json` inside your project's `.claude/` folder and fill in your server details.
+
+---
+
+### Slash Commands
+
+Slash commands are single-purpose markdown files that Claude Code executes when you type `/<name>` in the prompt.
+
+| Scope | Drop-in path |
+|---|---|
+| User-level | `~/.claude/commands/<name>.md` |
+| Project-level | `<project>/.claude/commands/<name>.md` |
+
+**Example — a quick git-status command:**
+
+```markdown
+---
+name: gs
+description: Show git status + last 3 commits
+---
+
+Run `git status --short` then `git log --oneline -3` and format the
+output as a two-section summary.
+```
+
+For **Telegram slash commands** (owner-only, handled inline by the team-lead), add a row to the command table in root `CLAUDE.md` and a corresponding script in `agents/`. See the existing `/stats` and `/compact` entries as examples.
 
 ---
 
