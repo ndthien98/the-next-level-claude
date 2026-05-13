@@ -5,13 +5,13 @@
 ### Personal multi-agent Claude Code fleet — Telegram-driven, dispatcher-orchestrated
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/<owner>/<repo>?style=social)](https://github.com/<owner>/<repo>/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/<owner>/<repo>?style=social)](https://github.com/<owner>/<repo>/network/members)
-[![Contributors](https://img.shields.io/github/contributors/<owner>/<repo>)](https://github.com/<owner>/<repo>/graphs/contributors)
-[![Last commit](https://img.shields.io/github/last-commit/<owner>/<repo>)](https://github.com/<owner>/<repo>/commits/main)
-[![Issues](https://img.shields.io/github/issues/<owner>/<repo>)](https://github.com/<owner>/<repo>/issues)
+[![GitHub stars](https://img.shields.io/github/stars/ndthien98/the-next-level-claude?style=social)](https://github.com/ndthien98/the-next-level-claude/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ndthien98/the-next-level-claude?style=social)](https://github.com/ndthien98/the-next-level-claude/network/members)
+[![Contributors](https://img.shields.io/github/contributors/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/graphs/contributors)
+[![Last commit](https://img.shields.io/github/last-commit/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/commits/main)
+[![Issues](https://img.shields.io/github/issues/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/issues)
 
-> **Replace `<owner>/<repo>` with your GitHub path after pushing** (e.g. `ndthien98/the-next-level-claude`).
+> **Forking?** Replace `ndthien98/the-next-level-claude` in the badge URLs above with `<your-owner>/<your-repo>`.
 
 </div>
 
@@ -77,7 +77,7 @@ Linux or macOS. Bash 4+.
 ## Quick Start
 
 ```bash
-# 1. Clone — replace <owner>/<repo> with the actual GitHub path of this
+# 1. Clone — replace ndthien98/the-next-level-claude with the actual GitHub path of this
 #    repository (e.g. the page you found this README on).
 git clone https://github.com/ndthien98/the-next-level-claude.git ~/next-level-claude
 cd ~/next-level-claude
