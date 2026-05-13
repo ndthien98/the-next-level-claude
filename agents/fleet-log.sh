@@ -11,7 +11,7 @@
 #   - On ERROR or FATAL: also pushes to Telegram (best-effort)
 #   - On FATAL: exits 1
 
-set -u
+set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 LOG="$FLEET/.state/fleet.jsonl"
 mkdir -p "$(dirname "$LOG")"

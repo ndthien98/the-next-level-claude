@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fleet-level stats. Mobile-friendly Telegram output.
-set -u
+set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 [ -f "$FLEET/.env" ] && { set -a; . "$FLEET/.env"; set +a; }
 NAME="${FLEET_NAME:-claudistant}"

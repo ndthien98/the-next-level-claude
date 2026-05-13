@@ -7,7 +7,7 @@
 #   1 = problems found but auto-healing attempted
 #   2 = problems found that need human intervention (escalated to Telegram)
 
-set -u
+set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$FLEET"
 [ -f .env ] && { set -a; . .env; set +a; }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bootstrap a new project from the template.
 # Usage: project-create.sh <name> [persona-label]
-set -u
+set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 TPL="$FLEET/templates/project"
 REG="$FLEET/.state/projects.json"

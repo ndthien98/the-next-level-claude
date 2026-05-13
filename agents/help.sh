@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Print available slash commands to Telegram.
+set -uo pipefail
 cat <<'EOF'
 🤖 Fleet commands (owner-only)
 

@@ -8,7 +8,7 @@
 # All background work lives INSIDE the Claude Code session — see
 # .claude/JOBS.md. No pm2, no daemons.
 
-set -u
+set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$FLEET"
 [ -f .env ] && { set -a; . .env; set +a; }

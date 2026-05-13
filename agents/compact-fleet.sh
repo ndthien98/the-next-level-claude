@@ -9,7 +9,7 @@
 #    sub-key produces `lead-<project-name>-<sub-key>` (e.g. project
 #    "foo" with leads.api + leads.web → `lead-foo-api` and `lead-foo-web`).
 
-set -u
+set -uo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 REG="$FLEET/.state/projects.json"
 
