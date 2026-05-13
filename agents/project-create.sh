@@ -52,6 +52,13 @@ seed ".claude/memory/learnings/FEATURE_REQUESTS.md" "# Feature Requests (project
 seed ".claude/reminders/REMINDERS.md"               "# Active TODOs (project: $NAME)"
 seed ".claude/reminders/SCHEDULE.md"                "# Recurring Schedule (project: $NAME)"
 
+# Bootstrap memory + agent-memory scaffolding (creates MEMORY.md indices for
+# lead/coder/reviewer/researcher). Idempotent — safe to skip on failure.
+if [ -x "$FLEET/agents/memory-bootstrap.sh" ]; then
+  bash "$FLEET/agents/memory-bootstrap.sh" "$NAME" >/dev/null 2>&1 || true
+  echo "→ memory scaffolding ready (lead/coder/reviewer/researcher)"
+fi
+
 # Register in projects.json
 TMP=$(mktemp)
 jq --arg n "$NAME" --arg p "$PERSONA" --arg d "$DST" --arg t "$(date '+%Y-%m-%d %H:%M:%S')" '

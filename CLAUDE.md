@@ -274,6 +274,37 @@ Save every agent ID immediately after spawn. See
 `/skill fleet-session-persistence` for save commands and storage
 locations.
 
+## Memory & Continuity
+
+Each project carries two complementary memory stores so leads and
+specialists keep context across sessions, restarts, and compactions.
+
+**Tier 1 — Claude Code auto-memory.** Lives under
+`~/.claude/projects/-<encoded-path>/memory/` (managed by Claude Code).
+Holds `MEMORY.md` (index) plus `project_*.md`, `user_*.md`,
+`feedback_*.md`, `reference_*.md` files. Auto-discovered on session
+start; no fleet code touches this directory.
+
+**Tier 2 — Per-project agent memory.** Lives inside the project at
+`projects/<name>/.claude/agent-memory/<role>/MEMORY.md`. One subfolder
+per long-lived role (lead, coder, reviewer, researcher). Specialists
+read their own `MEMORY.md` on first run and update it at the end of
+substantive sessions. Scaffolded automatically by
+`agents/project-create.sh` (which calls `agents/memory-bootstrap.sh`).
+
+Write to memory when:
+- The owner gives a durable instruction worth carrying forward.
+- You learn a project fact expensive to re-discover (DB port, custom
+  build flag, atypical folder layout, frozen API contract).
+- An architectural decision is finalized.
+
+Do NOT write when:
+- The fact already lives in `docs/` or `README.md` (link instead).
+- The fact is transient ("the build is failing right now").
+- The fact is sensitive (tokens, credentials, private keys — never).
+
+Full reference: `templates/project/.claude/memory/README.md`.
+
 ## Background jobs (no pm2 — everything inside Claude)
 
 All long-running work is driven by Claude Code's own tools:
