@@ -23,7 +23,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FLEET_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$FLEET_ROOT"
 
-DEFAULT_ROLES=(lead coder reviewer researcher)
+DEFAULT_ROLES=(lead coder reviewer researcher planner qa debugger devops)
 
 if [[ $# -lt 1 ]]; then
   echo "Usage: $(basename "$0") <project-name>" >&2
