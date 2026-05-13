@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Send a local file to the configured Telegram chat. Reads creds from .env.
 # Auto-detects type via mime → sendPhoto / sendAudio / sendVideo / sendDocument.
+# Retries on failure; logs to .claude/logs/tg-send-errors.log.
 # Usage:
 #   send-telegram-file.sh <local_path> [caption]
 # Exit 0 on success.
 
-set -u
+set -uo pipefail
 
 WORKDIR="$(cd "$(dirname "$0")/../.." && pwd)"
 [ -f "$WORKDIR/.env" ] && { set -a; . "$WORKDIR/.env"; set +a; }
@@ -36,14 +37,27 @@ case "$MIME" in
   *)                                ENDPOINT=sendDocument; FIELD=document ;;
 esac
 
-ARGS=(-s -X POST "$API/$ENDPOINT" -F "chat_id=$CHAT" -F "${FIELD}=@${FILE}")
+ERR_LOG="$WORKDIR/.claude/logs/tg-send-errors.log"
+mkdir -p "$(dirname "$ERR_LOG")"
+
+ARGS=(-s --max-time 30 -X POST "$API/$ENDPOINT" -F "chat_id=$CHAT" -F "${FIELD}=@${FILE}")
 [ -n "$CAPTION" ] && ARGS+=(-F "caption=$CAPTION")
 
-RESP="$(curl "${ARGS[@]}")"
-OK="$(echo "$RESP" | jq -r '.ok // false' 2>/dev/null)"
-if [ "$OK" = "true" ]; then
-  echo "sent: $(basename "$FILE") via $ENDPOINT (${SIZE}B, $MIME)"
-  exit 0
-fi
-echo "telegram error: $(echo "$RESP" | jq -r '.description // .')" >&2
+DESC=""
+for ATTEMPT in 1 2 3; do
+  RESP="$(curl "${ARGS[@]}" 2>&1)" || RESP="curl-failed: $RESP"
+  OK="$(echo "$RESP" | jq -r '.ok // false' 2>/dev/null || echo false)"
+  if [ "$OK" = "true" ]; then
+    echo "sent: $(basename "$FILE") via $ENDPOINT (${SIZE}B, $MIME)"
+    exit 0
+  fi
+  DESC="$(echo "$RESP" | jq -r '.description // .' 2>/dev/null || echo "$RESP")"
+  echo "send-telegram-file attempt $ATTEMPT failed: $DESC" >&2
+  [ "$ATTEMPT" -lt 3 ] && sleep "$(( ATTEMPT * 2 ))"
+done
+
+TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+printf '%s | file=%s | size=%s | mime=%s | last_resp=%s\n' \
+  "$TS" "$(basename "$FILE")" "$SIZE" "$MIME" "${DESC:0:200}" >> "$ERR_LOG"
+echo "send-telegram-file: gave up after 3 attempts. Logged to $ERR_LOG" >&2
 exit 1

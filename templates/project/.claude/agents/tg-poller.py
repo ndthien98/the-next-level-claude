@@ -12,10 +12,21 @@ Env vars consumed:
 """
 import json
 import os
+import socket
 import sys
 import time
 import urllib.request
 from pathlib import Path
+
+# Force IPv4 — prevents "Network unreachable" on hosts without IPv6 routing
+_orig_getaddrinfo = socket.getaddrinfo
+
+
+def _ipv4_getaddrinfo(host, port, family=0, *args, **kwargs):
+    return _orig_getaddrinfo(host, port, socket.AF_INET, *args, **kwargs)
+
+
+socket.getaddrinfo = _ipv4_getaddrinfo
 
 
 def _load_env(workdir: Path) -> dict[str, str]:
