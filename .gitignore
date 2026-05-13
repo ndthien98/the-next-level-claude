@@ -1,0 +1,68 @@
+# ─── Credentials (NEVER COMMIT) ────────────────────────────────────────
+.env
+.env.bak.*
+# Fleet-root MCP config — may contain API tokens (jira, github, etc.)
+.mcp.json
+
+# ─── Runtime state (generated, never commit) ───────────────────────────
+.state/active-project.txt
+.state/projects.json
+.state/identities.json
+.state/main-session.id
+.state/team.id
+.state/fleet.jsonl
+.state/tg-send-errors.log
+.state/hook-idle.log
+.state/hook-task-completed.log
+
+# ─── Claude runtime ────────────────────────────────────────────────────
+.claude/tg-state/*
+!.claude/tg-state/.gitkeep
+.claude/logs/*
+!.claude/logs/.gitkeep
+.claude/daily-audit/*
+!.claude/daily-audit/.gitkeep
+.claude/scheduled_tasks.lock
+.claude/scheduled_tasks.json
+
+# ─── Fleet-level inbox / outbox (gitignored, only .gitkeep tracked) ────
+uploads/*
+!uploads/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# ─── User projects (runtime, not template) ─────────────────────────────
+# projects/ holds live workspaces. Only .gitkeep is tracked.
+projects/*/
+
+# ─── Per-project runtime ───────────────────────────────────────────────
+projects/**/.claude/state/
+projects/**/.claude/tg-state/
+projects/**/.claude/logs/
+projects/**/.claude/sessions/
+projects/**/uploads/
+projects/**/outputs/
+projects/**/node_modules/
+projects/**/dist/
+projects/**/coverage/
+projects/**/contracts/out/
+projects/**/contracts/cache/
+projects/**/contracts/lib/
+projects/**/.yarn/
+
+# ─── Python ────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+
+# ─── OS / editor ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# ─── Keep markers ──────────────────────────────────────────────────────
+!.gitkeep
+!**/.gitkeep

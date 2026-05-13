@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "_comment": "Per-project MCP servers. Copy to .mcp.json and customize.",
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}

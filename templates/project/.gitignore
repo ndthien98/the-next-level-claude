@@ -1,0 +1,24 @@
+# Real credentials
+.env
+
+# Runtime state
+.claude/state/*
+!.claude/state/.gitkeep
+.claude/tg-state/*
+!.claude/tg-state/.gitkeep
+.claude/logs/*
+!.claude/logs/.gitkeep
+.claude/sessions/*
+!.claude/sessions/.gitkeep
+
+# Inbound / outbound files
+uploads/*
+!uploads/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# OS / editor
+.DS_Store
+*.swp
+__pycache__/
+*.pyc
