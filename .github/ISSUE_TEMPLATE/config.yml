@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/ndthien98/the-next-level-claude/discussions
+    about: Questions, ideas, and community help — open a Discussion rather than an Issue
