@@ -5,8 +5,8 @@
 ### Personal multi-agent Claude Code fleet — Telegram-driven, dispatcher-orchestrated
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/ndthien98/the-next-level-claude?style=social)](https://github.com/ndthien98/the-next-level-claude/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/ndthien98/the-next-level-claude?style=social)](https://github.com/ndthien98/the-next-level-claude/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/ndthien98/the-next-level-claude?style=flat&logo=github)](https://github.com/ndthien98/the-next-level-claude/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ndthien98/the-next-level-claude?style=flat&logo=github)](https://github.com/ndthien98/the-next-level-claude/network/members)
 [![Contributors](https://img.shields.io/github/contributors/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/graphs/contributors)
 [![Last commit](https://img.shields.io/github/last-commit/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/commits/main)
 [![Issues](https://img.shields.io/github/issues/ndthien98/the-next-level-claude)](https://github.com/ndthien98/the-next-level-claude/issues)
@@ -180,6 +180,14 @@ projects/my-new-project/
     │   ├── SOUL.md                  ← values, boundaries, vibe
     │   └── USER.md                  ← who you are (address style, timezone)
     ├── agents/roles/lead.md         ← lead operating model
+    ├── memory/                      ← project memory bank (MEMORY.md index)
+    │   ├── README.md                ← how memory & continuity works
+    │   └── MEMORY.md                ← top-level memory index
+    ├── agent-memory/                ← per-role memory scaffolding
+    │   ├── lead/MEMORY.md
+    │   ├── coder/MEMORY.md
+    │   ├── reviewer/MEMORY.md
+    │   └── researcher/MEMORY.md
     ├── .mcp.json                    ← optional MCP servers (copy from .mcp.json.example)
     ├── SKILLS.md                    ← optional extra skills for this project
     └── TOOLS.md                     ← optional tool allowlist/blocklist
@@ -209,6 +217,45 @@ cp -r templates/personas/jarvis/ projects/my-new-project/.claude/persona/
 ```
 
 The `BOOTSTRAP.md` file in each persona folder guides the lead through its first-wake interview to fill in the remaining blanks. Delete it once the persona is configured.
+
+---
+
+## Memory & Continuity
+
+Each project has two complementary memory stores so the lead and specialists keep context across sessions, restarts, and compactions.
+
+| Tier | Path | Managed by |
+|---|---|---|
+| **Auto-memory** | `~/.claude/projects/-<encoded-path>/memory/` | Claude Code (automatic) |
+| **Agent memory bank** | `projects/<name>/.claude/agent-memory/<role>/` | The fleet (scaffolded by `agents/memory-bootstrap.sh`) |
+
+Files follow a naming convention: `MEMORY.md` (the index, ≤30 lines) plus content files prefixed `project_*.md`, `user_*.md`, `feedback_*.md`, `reference_*.md`. Write to memory for durable facts (owner preferences, stable project facts, finalized decisions). Don't write for transient state or secrets.
+
+Full reference: `templates/project/.claude/memory/README.md`.
+
+Bootstrap on an existing project:
+
+```bash
+bash agents/memory-bootstrap.sh my-project   # idempotent — safe to re-run
+```
+
+`agents/project-create.sh` calls this automatically when scaffolding a new project.
+
+---
+
+## Fleet Rules
+
+The fleet ships with five engineering rule files at `.claude/rules/` that every lead reads on spawn:
+
+| File | Audience | Covers |
+|---|---|---|
+| `development-rules.md` | every agent | YAGNI / KISS / DRY, file size, security, conventional commits |
+| `orchestration-protocol.md` | leads | Delegation context block, parallel-safety, anti-patterns |
+| `team-coordination-rules.md` | specialists | File ownership, reports, idle state, conflict resolution |
+| `primary-workflow.md` | leads | Default loop: Plan → Implement → Test → Review → Integrate |
+| `documentation-management.md` | every agent | `docs/`, `plans/`, `reports/` conventions |
+
+Override a rule for one project by adding the override to that project's `CLAUDE.md` — don't edit the fleet rules in-place.
 
 ---
 
@@ -312,9 +359,12 @@ Double-check your bot token format: `<numeric_id>:<alphanumeric_secret>`. Re-gen
 ├── .claude/
 │   ├── settings.json             hooks config (rewritten by onboard.sh)
 │   ├── JOBS.md                   background jobs spec
-│   ├── hooks/                    PreToolUse · TeammateIdle · TaskCompleted
-│   └── skills/                   fleet-first-time-setup · fleet-warm-restart
-│                                 fleet-spawn-lead · fleet-session-persistence
+│   ├── hooks/                    SessionStart · UserPromptSubmit ·
+│   │                             PreToolUse · TeammateIdle · TaskCompleted
+│   ├── skills/                   fleet-first-time-setup · fleet-warm-restart
+│   │                             fleet-spawn-lead · fleet-session-persistence
+│   └── rules/                    development · orchestration · team-coord ·
+│                                 primary-workflow · documentation
 ├── agents/                       fleet-level scripts
 │   ├── onboard.sh                interactive first-time setup
 │   ├── setup-fleet.sh            idempotent bootstrap (validates .env, registers bot commands)
@@ -328,6 +378,7 @@ Double-check your bot token format: `<numeric_id>:<alphanumeric_secret>`. Re-gen
 │   ├── stats-fleet.sh            /stats output
 │   ├── compact-fleet.sh          /compact via tmux send-keys
 │   ├── audit-fleet.sh            structural audit + auto-heal
+│   ├── memory-bootstrap.sh       scaffold .claude/memory + agent-memory
 │   └── fleet-log.sh              structured JSON logger
 ├── templates/
 │   ├── project/                  copied verbatim by project-create.sh
