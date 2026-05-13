@@ -4,8 +4,9 @@
 # 2. mkdir top-level state dirs
 # 3. Initialize projects.json
 # 4. Sanity-check bot token + set bot commands
+# Exit codes: 0=success, 2=config error, 3=bot API error.
 
-set -u
+set -euo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$FLEET"
 

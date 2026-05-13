@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Switch the fleet's active project.
 # Usage: project-switch.sh <name>
-set -u
+set -euo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 REG="$FLEET/.state/projects.json"
 ACTIVE_FILE="$FLEET/.state/active-project.txt"

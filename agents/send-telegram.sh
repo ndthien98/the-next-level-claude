@@ -7,6 +7,7 @@
 #   send-telegram.sh "message"
 #   echo "msg" | send-telegram.sh
 # Auto-chunks at 3800 chars.
+# Exit codes: 0=success, 1=all-retries-failed, 2=config/env error.
 
 set -uo pipefail
 
@@ -60,12 +61,12 @@ send_chunk() {
 }
 
 MAX=3800
-ALL_OK=0
+had_error=0
 while [ -n "$MSG" ]; do
   CHUNK="${MSG:0:$MAX}"
   MSG="${MSG:$MAX}"
   if ! send_chunk "$CHUNK"; then
-    ALL_OK=1
+    had_error=1
   fi
 done
-exit "$ALL_OK"
+exit "$had_error"

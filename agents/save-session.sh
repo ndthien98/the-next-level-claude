@@ -6,7 +6,7 @@
 #   save-session.sh specialist <project-name> <role> <agent-id>
 #   save-session.sh team <team-id>
 
-set -u
+set -euo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 REG="$FLEET/.state/projects.json"
 

@@ -12,8 +12,8 @@ Run this sequence when starting a new Claude Code session after a crash or resta
 Bash("bash agents/fleet-restart.sh")
 
 # 2) Re-create the team (required each new Claude Code session)
-TeamCreate(team_name="claudistant", description="Personal coding fleet")
-Bash("bash agents/save-session.sh team claudistant")
+TeamCreate(team_name="${FLEET_NAME:-claudistant}", description="Personal coding fleet")
+Bash("bash agents/save-session.sh team ${FLEET_NAME:-claudistant}")
 
 # 3) Re-spawn any leads
 Bash("bash agents/respawn-leads.sh")

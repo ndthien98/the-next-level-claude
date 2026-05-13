@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Print the active project + brief state.
-set -u
+set -euo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 ACTIVE_FILE="$FLEET/.state/active-project.txt"
 REG="$FLEET/.state/projects.json"

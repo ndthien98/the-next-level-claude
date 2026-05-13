@@ -3,9 +3,9 @@
 # Auto-detects type via mime → sendPhoto / sendAudio / sendVideo / sendDocument.
 # Usage:
 #   send-telegram-file.sh <local_path> [caption]
-# Exit 0 on success.
+# Exit codes: 0=success, 1=all-retries-failed, 2=config/arg error, 3=file too large.
 
-set -u
+set -euo pipefail
 
 WORKDIR="$(cd "$(dirname "$0")/.." && pwd)"
 [ -f "$WORKDIR/.env" ] && { set -a; . "$WORKDIR/.env"; set +a; }

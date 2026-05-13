@@ -5,7 +5,7 @@
 #
 # Usage: bash agents/respawn-leads.sh
 
-set -u
+set -euo pipefail
 FLEET="$(cd "$(dirname "$0")/.." && pwd)"
 REG="$FLEET/.state/projects.json"
 

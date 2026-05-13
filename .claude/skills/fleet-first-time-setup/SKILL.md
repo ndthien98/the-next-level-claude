@@ -15,8 +15,8 @@ Bash("bash agents/setup-fleet.sh")
 Bash("bash agents/project-create.sh my-first-project")
 
 # 3) Create team + spawn leads
-TeamCreate(team_name="claudistant", description="Personal coding fleet")
-Bash("bash agents/save-session.sh team claudistant")
+TeamCreate(team_name="${FLEET_NAME:-claudistant}", description="Personal coding fleet")
+Bash("bash agents/save-session.sh team ${FLEET_NAME:-claudistant}")
 # Spawn leads per skill: /skill fleet-spawn-lead, then:
 Bash("bash agents/save-session.sh lead my-first-project <agent-id>")
 
