@@ -222,12 +222,18 @@ fi
 cp "$FLEET_ROOT/.env.example" "$ENV_PATH"
 set_kv() {
   local k="$1" v="$2"
-  # Escape special chars in v for sed (slashes, ampersands, pipes)
-  local esc; esc="$(printf '%s' "$v" | sed -e 's/[\\/&|]/\\&/g')"
+  # Single-quote-wrap the value so spaces / shell metacharacters are
+  # preserved when sourced with `set -a; . .env; set +a` (the standard
+  # pattern in setup-fleet.sh and friends). Escape any embedded single
+  # quotes via the '\'' close+escape+reopen idiom.
+  local quoted; quoted="'${v//\'/\'\\\'\'}'"
+  # Quote the result again so sed's replacement doesn't choke on the
+  # value (still escape & | and \ for the sed s|||).
+  local esc; esc="$(printf '%s' "$quoted" | sed -e 's/[\\&|]/\\&/g')"
   if grep -qE "^${k}=" "$ENV_PATH"; then
     sed -i "s|^${k}=.*|${k}=${esc}|" "$ENV_PATH"
   else
-    printf '\n%s=%s\n' "$k" "$v" >> "$ENV_PATH"
+    printf '\n%s=%s\n' "$k" "$quoted" >> "$ENV_PATH"
   fi
 }
 set_kv TG_BOT_TOKEN              "$TG_BOT_TOKEN"
