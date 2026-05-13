@@ -51,3 +51,4 @@ IMPORTANT: Send shutdown_request to lead-$NAME from your Claude session
            if the lead is still running:
   SendMessage(to:"lead-$NAME", message={"type":"shutdown_request",...})
 EOF
+exit 0

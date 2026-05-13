@@ -76,3 +76,4 @@ Next steps:
   3. Switch active:    bash agents/project-switch.sh <name>
   4. Start poller:     Monitor(persistent=true, "exec python3 agents/tg-poller.py")
 EOF
+exit 0
