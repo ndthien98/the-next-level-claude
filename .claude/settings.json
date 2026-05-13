@@ -8,6 +8,35 @@
             "type": "command",
             "command": "${FLEET_ROOT}/.claude/hooks/session-init.cjs",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${FLEET_ROOT}/.claude/hooks/on-session-start.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${FLEET_ROOT}/.claude/hooks/on-session-end.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${FLEET_ROOT}/.claude/hooks/on-pre-compact.sh",
+            "timeout": 15
           }
         ]
       }
